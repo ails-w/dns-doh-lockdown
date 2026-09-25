@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Agent tooling (local indexes, never shared)
+.codegraph/
+.atl/
+
+# Backups / dumps
+*.bak
+*.orig
+*~
+netguard-backups/
+
+# Secrets
+*.pem
+*.key
+*.p12
+.env
