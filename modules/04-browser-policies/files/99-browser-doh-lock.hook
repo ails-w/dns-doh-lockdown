@@ -1,0 +1,10 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = *
+
+[Action]
+Description = Re-aplicando politicas DoH-off a todos los navegadores...
+When = PostTransaction
+Exec = /usr/bin/systemd-tmpfiles --create /etc/tmpfiles.d/browser-doh-lock.conf
