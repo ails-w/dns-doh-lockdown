@@ -1,0 +1,26 @@
+# BEGIN netguard-doh
+127.0.0.1 cloudflare-dns.com
+::1       cloudflare-dns.com
+127.0.0.1 mozilla.cloudflare-dns.com
+::1       mozilla.cloudflare-dns.com
+127.0.0.1 family.cloudflare-dns.com
+::1       family.cloudflare-dns.com
+127.0.0.1 security.cloudflare-dns.com
+::1       security.cloudflare-dns.com
+127.0.0.1 one.one.one.one
+::1       one.one.one.one
+127.0.0.1 dns.google
+::1       dns.google
+127.0.0.1 dns.quad9.net
+::1       dns.quad9.net
+127.0.0.1 doh.opendns.com
+::1       doh.opendns.com
+127.0.0.1 dns.nextdns.io
+::1       dns.nextdns.io
+127.0.0.1 doh.mullvad.net
+::1       doh.mullvad.net
+127.0.0.1 dns.adguard-dns.com
+::1       dns.adguard-dns.com
+127.0.0.1 dns.controld.com
+::1       dns.controld.com
+# END netguard-doh
