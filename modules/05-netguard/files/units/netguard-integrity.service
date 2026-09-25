@@ -1,0 +1,6 @@
+[Unit]
+Description=NetGuard config integrity check
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/netguard-integrity

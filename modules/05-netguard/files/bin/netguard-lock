@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+. /usr/local/lib/guard/golden.sh
+. /usr/local/lib/netguard/files.sh
+for live in "${NG_FILES[@]}"; do
+  golden_lock_one "$live"
+done
+guard_audit "config-locked files=${#NG_FILES[@]}"
+echo "netguard: config bloqueada, golden actualizada."

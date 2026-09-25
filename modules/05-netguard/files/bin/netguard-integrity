@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+. /usr/local/lib/guard/golden.sh
+. /usr/local/lib/netguard/files.sh
+for live in "${NG_FILES[@]}"; do
+  [ -e "$live" ] || continue
+  golden="$(golden_path "$live")"
+  [ -f "$golden" ] || continue
+  if [ "$live" != "$0" ] && ! cmp -s "$golden" "$live"; then
+    chattr -i "$live" 2>/dev/null || true
+    cp -a "$golden" "$live"
+    chattr +i "$live" 2>/dev/null || true
+    guard_audit "integrity-restore file=$live"
+    case "$live" in
+      /etc/nftables.conf) nft -f /etc/nftables.conf 2>/dev/null || true ;;
+      /etc/hosts) resolvectl flush-caches 2>/dev/null || true ;;
+      /etc/systemd/resolved.conf.d/*) resolvectl flush-caches 2>/dev/null || true ;;
+      /etc/tmpfiles.d/*) systemd-tmpfiles --create "$live" 2>/dev/null || true ;;
+    esac
+    continue
+  fi
+  if ! golden_is_inmutable "$live"; then
+    chattr +i "$live" 2>/dev/null || true
+    guard_audit "integrity-relock file=$live"
+  fi
+done

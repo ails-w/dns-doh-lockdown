@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -euo pipefail
+. /usr/local/lib/guard/golden.sh
+. /usr/local/lib/netguard/files.sh
+PHRASE="desarmar red"
+WAIT=60
+if [ "$(id -u)" -ne 0 ]; then
+  echo "Ejecuta con sudo." >&2
+  exit 1
+fi
+printf "Esto QUITA la inmutabilidad de los archivos de red/DNS.\nEscribe \"%s\" para confirmar: " "$PHRASE"
+read -r answer
+if [ "$answer" != "$PHRASE" ]; then
+  guard_audit "netguard-disarm-aborted"
+  echo "Cancelado."
+  exit 1
+fi
+echo "Desarmando en $WAIT s (Ctrl+C para abortar)..."
+i=$WAIT
+while [ "$i" -gt 0 ]; do
+  printf "\r%d s... " "$i"
+  sleep 1
+  i=$(( i - 1 ))
+done
+printf "\n"
+systemctl stop netguard-integrity.timer
+for live in "${NG_FILES[@]}"; do
+  chattr -i "$live" 2>/dev/null || true
+done
+guard_audit "netguard-disarm user=${SUDO_USER:-$(id -un)}"
+echo "netguard: timers detenidos e inmutabilidad removida."
